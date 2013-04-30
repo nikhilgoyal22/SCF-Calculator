@@ -101,7 +101,7 @@
 }
 #lt-middle{
     padding-left:4%;
-    padding-top: 4%;
+    padding-top: 2%;
     padding-right: 4%;
     padding-bottom: 2%; 
     height: 27%;
@@ -123,7 +123,9 @@
     line-height: 1.5em;
     color: #FFFFFF;
 }
-
+#button-div{
+    padding: 6% 4%;
+}
 .slider {
 	width:99%;
 	height:6px;
@@ -154,8 +156,7 @@
 }
 /*fill bar*/
 .ui-widget-header {
-	background: #615D5A;
-	/*background:url(fill.png) no-repeat left !important;*/
+	background: #EEEEEE;
 	height:4px !important;
 	left:1px !important;
 	top:1px !important;
@@ -165,6 +166,15 @@ a {
 	outline:none;
 	-moz-outline-style:none;
 }
+
+.input-dimension{
+    width: 30% !important;
+    height: 25% !important;
+    background: #615D5A !important;
+    border:1px solid #615D5A !important;
+    color: #FFFFFF;
+}
+
 .selection{
     height: 22%;
     color: #FFFFFF;
@@ -186,3 +196,4 @@ a {
     padding-left: 10px;
     padding-top: 4px !important;
     line-height: 1.4em;
+}
