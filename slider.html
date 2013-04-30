@@ -1,0 +1,140 @@
+<html>
+	<head>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+		<script type="text/javascript" src="currencies.js"></script>
+		<script type="text/javascript" src="date-support.js"></script>
+		<link type="text/css" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+		<link type="text/css" href="bootstrap.min.css" rel="stylesheet" />
+		<link type="text/css" href="slider.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div id="calc-container">
+		    <div id="calc-leftpanel">
+		        <div id="left-top">
+		        	<div id="lt-top">
+			        	<div id="left-header">Sample Rate and Payment Calculator</div>
+			        	<div id="left-head-text"></div>
+			        	<div>
+			        		<select id="currency" class="selection span2">
+							    <option value="0" selected="selected">Select Currency</option>
+							    <option value="1">Something</option>
+							    <option value="2">Something else</option>
+							    <option value="3">Another choice</option>
+							</select>
+							<label id="check-discount" class="checkbox">
+						    	<input id="checkbox-discount" type="checkbox"> I currently have discount terms
+						    </label>
+			        	</div>
+			        </div>
+			        <div id="lt-middle">
+			        	<div class="controls controls-row">
+							<input class="span2 input-dimension" type="text" placeholder="Invoice Value">
+							<input class="span2 input-dimension" type="text" placeholder="SCF Financing %">
+							<input class="span2 input-dimension" type="text" placeholder="Net Days">
+						</div>
+						<div class="controls controls-row">
+							<input class="span2 input-dimension" type="text" placeholder="Supplier Cost of Capital">
+							<input class="span2 input-dimension" type="text" placeholder="Discount %">
+							<input class="span2 input-dimension" type="text" placeholder="Discount Days">
+						</div>
+			        </div>
+			        <div id="lt-bottom">
+			        	<div id="lt-bottom-text">When do you want your recievable?</div>
+			        	<div id="slider-result">
+			        		<div id="result-day" style="float:left; font-weight:bold;"></div>
+			        		<div id="result-text" style="float:left; margin-left:2%; font-size:0.8em;"></div>
+			        	</div>
+			        	<div id="start-date" style="float:left; clear:both; font-size:1.1em; width:20%"></div>
+		            	<div style="width:52%; float:left;">
+		            		<div class="slider"></div>
+		            	</div>
+		            	<div id="end-date" style="float:right; font-size:1.1em; width:20%"></div>		            	  
+		            	<!--input type="hidden" id="hidden"/-->
+	            	</div>
+        		</div>
+        		<div id="left-bottom">
+        		</div>
+		    </div>
+		    <div id="calc-rightpanel">
+		        <div id="right-top">
+		        	<div id="right-header">Scenario Results</div>
+		        </div>
+		        <div id="right-middle"></div>
+		        <div id="right-bottom">
+		        	<div id="right-bottom-text"></div>
+		        </div>
+		    </div>
+		</div>
+
+		<script type="text/javascript">
+
+		netDays = 60;
+		dayOfPayment = 10;
+		startDate = new Date;
+		endDate = new Date;
+		endDate.addDays(netDays);
+
+		$(document).ready(function(){
+			
+			$( ".slider").slider({
+					animate: true,
+					range: "min",
+					value: dayOfPayment,
+					min: 1,
+					max: netDays,
+					step: 1,
+
+					//this gets a live reading of the value and prints it on the page
+					slide: function( event, ui ) {
+
+					   //$( "#slider-result" ).html( ui.value );
+					   window.uiv  = ui;
+						resultDate = new Date;
+					 	resultDate.addDays(ui.value);
+						$("#result-day").html(resultDate.getDate() + " " + resultDate.getMonthName() + ", " + resultDate.getFullYear())
+						daysEarly = netDays - ui.value;
+						$("#result-text").html("( " + daysEarly + " Days Early )")
+						calculate(ui);
+					},
+
+					//this updates the hidden form field so we can submit the data using a form
+					change: function(event, ui) {
+					$('#hidden').attr('value', ui.value);
+					}
+			});
+			resultDate = new Date;
+		 	resultDate.addDays(dayOfPayment);
+			$("#result-day").html(resultDate.getDate() + " " + resultDate.getMonthName() + ", " + resultDate.getFullYear())
+			daysEarly = netDays - dayOfPayment;
+			$("#result-text").html("( " + daysEarly + " Days Early )");
+			initialize();
+		});
+		function initialize(){
+
+			buyerName = "Heinz";
+			if (buyerName.length == 0){
+				buyerName = "this buyer"
+			}
+			
+			$("#left-head-text").html(
+				"Say you sent an invoice to " + buyerName + " today. What would it cost to get paid early? Use the input fields and the date slide to run numbers on some different financing scenarios. You can save and load your sample scenarios for easy comparison."
+			);
+			
+			$("#right-bottom-text").html(
+				"*SCF Financing cost based on " + buyerName + " credit rating and may vary. For more information, questions about this calculator or to review the financial impact of SCF on your recievables, please contact "+ "<a href='#'>PrimeRevenue Supplier Solutions</a>" +" directly."
+			);
+
+			$("#start-date").html(startDate.getDate() + " " + startDate.getMonthName());
+			$("#end-date").html(endDate.getDate() + " " + endDate.getMonthName());
+			
+		}
+
+		function calculate(ui){
+
+		}
+	
+		</script>
+	</body>
+</html>
