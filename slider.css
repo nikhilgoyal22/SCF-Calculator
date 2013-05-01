@@ -74,9 +74,9 @@
 }
 
 #lt-top{
-    padding-left:4%;
+    padding-left:4.5%;
     padding-top: 4%;
-    padding-right: 4%;
+    padding-right: 4.5%;
     padding-bottom: 2%; 
     height: 27%;
     border-bottom: 1px solid rgba(97,93,90,0.5);
@@ -100,16 +100,13 @@
     line-height: 1.6em;
 }
 #lt-middle{
-    padding-left:4%;
-    padding-top: 2%;
-    padding-right: 4%;
-    padding-bottom: 2%; 
-    height: 27%;
+    padding: 3% 4.5%;
+    height: 30%;
     border-bottom: 1px solid rgba(97,93,90,0.5);
 }
 #lt-bottom{
-    padding: 4%;
-    height: 22%
+    padding: 3% 4.5%;
+    height: 19%
 }
 #lt-bottom-text{
     margin-bottom: 2%;
@@ -124,9 +121,9 @@
     color: #FFFFFF;
 }
 #button-div{
-    padding: 6% 4%;
+    padding: 7% 4%;
 }
-.slider {
+.calc-slider {
 	width:99%;
 	height:6px;
 	background:#615D5A;
@@ -167,12 +164,38 @@ a {
 	-moz-outline-style:none;
 }
 
+.input-row{
+    margin-bottom: 2%;
+}
+.input-box{
+    width:29% !important; 
+    margin-left: 0px !important;
+    margin-right: 20px !important;
+}
+.input-label{
+    width:100% !important;    
+}
 .input-dimension{
-    width: 30% !important;
+    width: 100% !important;
     height: 25% !important;
     background: #615D5A !important;
     border:1px solid #615D5A !important;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
+}
+.result-field{
+    padding-top: 2%;
+    padding-left: 4%;
+    color: #000000;
+}
+
+.result-label{
+    font-size: 0.9em;
+    margin: 0px !important;
+    line-height: 15px !important;
+}
+.result-value{
+    font-weight: bold;
+    margin: 0px !important;
 }
 
 .selection{

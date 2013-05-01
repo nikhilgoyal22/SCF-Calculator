@@ -30,18 +30,32 @@
 			        </div>
 			        <div id="lt-middle">
 			        	<div class="controls controls-row input-row">
-			        		<label>Invoice Value</label>
-			        		<label>SCF Financing %</label>
-			        		<label>Net Days</label>
-							<input class="span2 input-dimension" type="text" placeholder="Invoice Value">
-							<input class="span2 input-dimension" type="text" placeholder="SCF Financing %">
-							<input class="span2 input-dimension" type="text" placeholder="Net Days">
+			        		<div class="span2 input-box">
+				        		<label class="input-label">Invoice Value</label>
+				        		<input id="inv-val" class="input-dimension" type="text" placeholder="Invoice Value">
+				        	</div>
+				        	<div class="span2 input-box">
+				        		<label class="input-label">SCF Financing(% APR)*</label>
+				        		<input id="scf-percent" class="input-dimension" type="text" placeholder="SCF Financing %">
+				        	</div>
+				        	<div class="span2 input-box">
+				        		<label class="input-label">Net Days</label>								
+								<input id="net-days" class="input-dimension" type="text" placeholder="Net Days">
+							</div>
 						</div>
 						<div class="controls controls-row input-row">
-							<label>Supplier Cost of Capital</label>
-							<input class="span2 input-dimension" type="text" placeholder="Supplier Cost of Capital">
-							<input class="span2 input-dimension" type="text" placeholder="Discount %">
-							<input class="span2 input-dimension" type="text" placeholder="Discount Days">
+							<div class="span2 input-box scc">
+								<label class="input-label">Supplier Cost of Capital</label>
+								<input id="supp-cost-cap" class="input-dimension" type="text" placeholder="Supplier Cost of Capital">
+							</div>
+							<div class="span2 input-box discount">
+								<label class="input-label">Discount %</label>
+								<input id="disc-percent" class="input-dimension" type="text" placeholder="Discount %">
+							</div>
+							<div class="span2 input-box discount">
+								<label class="input-label">Discount Days</label>						
+								<input id="disc-days" class="input-dimension" type="text" placeholder="Discount Days">
+							</div>
 						</div>
 			        </div>
 			        <div id="lt-bottom">
@@ -52,7 +66,7 @@
 			        	</div>
 			        	<div id="start-date" style="float:left; clear:both; font-size:1.1em; width:20%"></div>
 		            	<div style="width:52%; float:left;">
-		            		<div class="slider"></div>
+		            		<div class="calc-slider"></div>
 		            	</div>
 		            	<div id="end-date" style="float:right; font-size:1.1em; width:20%"></div>		            	  
 		            	<!--input type="hidden" id="hidden"/-->
@@ -60,7 +74,8 @@
         		</div>
         		<div id="left-bottom">
         			<div id="button-div">
-        				<button class="btn">Save Scenario</button>
+        				<button class="btn span2">Save Scenario</button>
+        				<button class="btn span2">Get LIBOR</button>
         			</div>
         		</div>
 		    </div>
@@ -68,7 +83,13 @@
 		        <div id="right-top">
 		        	<div id="right-header">Scenario Results</div>
 		        </div>
-		        <div id="right-middle"></div>
+		        <div id="right-middle">
+		        	<div id="pre-scf" class="result-field"></div>
+		        	<div id="post-scf" class="result-field"></div>
+		        	<div id="cost-reduction" class="result-field"></div>
+		        	<div id="percent-improv" class="result-field"></div>
+		        	<div id="account-cash" class="result-field"></div>
+		        </div>
 		        <div id="right-bottom">
 		        	<div id="right-bottom-text"></div>
 		        </div>
@@ -83,13 +104,28 @@
 		endDate = new Date;
 		endDate.addDays(netDays);
 
+		$("#checkbox-discount").click( function() {
+    		if($(this).is(":checked")){
+    			$('.discount').show();
+    		}else{
+    			$('.discount').hide();
+    		}
+
+		});
+
 		$(document).ready(function(){
+
+			if($(this).is(":checked")){
+    			$('.discount').show();
+    		}else{
+    			$('.discount').hide();
+    		}
 			
-			$( ".slider").slider({
+			$( ".calc-slider").slider({
 					animate: true,
 					range: "min",
 					value: dayOfPayment,
-					min: 1,
+					min: 0,
 					max: netDays,
 					step: 1,
 
@@ -97,13 +133,7 @@
 					slide: function( event, ui ) {
 
 					   //$( "#slider-result" ).html( ui.value );
-					   window.uiv  = ui;
-						resultDate = new Date;
-					 	resultDate.addDays(ui.value);
-						$("#result-day").html(resultDate.getDate() + " " + resultDate.getMonthName() + ", " + resultDate.getFullYear())
-						daysEarly = netDays - ui.value;
-						$("#result-text").html("( " + daysEarly + " Days Early )")
-						calculate(ui);
+						updateAll(ui.value);
 					},
 
 					//this updates the hidden form field so we can submit the data using a form
@@ -111,14 +141,10 @@
 					$('#hidden').attr('value', ui.value);
 					}
 			});
-			resultDate = new Date;
-		 	resultDate.addDays(dayOfPayment);
-			$("#result-day").html(resultDate.getDate() + " " + resultDate.getMonthName() + ", " + resultDate.getFullYear())
-			daysEarly = netDays - dayOfPayment;
-			$("#result-text").html("( " + daysEarly + " Days Early )");
-			initialize();
+			
+			updateAll(dayOfPayment);
 		});
-		function initialize(){
+		function updateAll(days){
 
 			buyerName = "Heinz";
 			if (buyerName.length == 0){
@@ -135,11 +161,58 @@
 
 			$("#start-date").html(startDate.getDate() + " " + startDate.getMonthName());
 			$("#end-date").html(endDate.getDate() + " " + endDate.getMonthName());
+
+			resultDate = new Date;
+		 	resultDate.addDays(days);
+			$("#result-day").html(resultDate.getDate() + " " + resultDate.getMonthName() + ", " + resultDate.getFullYear())
+			daysEarly = netDays - days;
+			$("#result-text").html("( " + daysEarly + " Days Early )");
+			
+			calculate(days);
+		}
+
+		function calculate(days){
+
+			invoiceValue = $('#inv-val').val();
+			scfPercent = $('#scf-percent').val();
+			paymentTerm = $('#net-days').val();
+			supplierCostCapital = $('#supp-cost-cap').val();
+			discountPercent = $('#disc-percent').val();
+			discountDays = $('#disc-days').val();
+			daysEarly = netDays - days;
+			yearDays = 360;
+
+			if(supplierCostCapital != 0){
+
+				console.log('yup');
+				preScfFinancingCost = roundNumber((invoiceValue/yearDays)*netDays*(supplierCostCapital/100)).toFixed(2);
+				postScfFinancingCost = roundNumber((invoiceValue/yearDays)*daysEarly*(scfPercent/100) + (invoiceValue/yearDays)*days*(supplierCostCapital/100)).toFixed(2);
+				costReduction = roundNumber(preScfFinancingCost - postScfFinancingCost).toFixed(2);
+				improvement = roundNumber((costReduction/preScfFinancingCost)*100).toFixed(2);
+
+				$('#pre-scf').html("<label class='result-label'>Pre SCF Financing Costs: <i class='icon-info-sign'></i></label><label class='result-value'>" + preScfFinancingCost + "</label>");
+				$('#post-scf').html("<label class='result-label'>Post SCF Financing based on " + scfPercent + "% APR: <i class='icon-info-sign'></i></label><label class='result-value'>" + postScfFinancingCost + "</label>");
+				$('#cost-reduction').html("<label class='result-label'>Supply Chain Price Reduction Potential: <i class='icon-info-sign'></i></label><label class='result-value'>" + costReduction + "</label>");
+				$('#percent-improv').html("<label class='result-label'>Percent Improvement: <i class='icon-info-sign'></i></label><label class='result-value'>" + improvement + " %</label>");
+				console.log(preScfFinancingCost);
+				console.log(postScfFinancingCost);
+			}
+			else{
+				postScfFinancingCost = roundNumber((invoiceValue/yearDays)*daysEarly*(scfPercent/100)).toFixed(2);
+				$('#post-scf').html("<label class='result-label'>Post SCF Financing based on " + scfPercent + "% APR: <i class='icon-info-sign'></i></label><label class='result-value'>" + postScfFinancingCost + "</label>");
+				console.log(postScfFinancingCost);
+			}
+
+			resultDate = new Date;
+		 	resultDate.addDays(days);
+			accountCash = roundNumber(invoiceValue - postScfFinancingCost).toFixed(2);
+			$('#account-cash').html("<label class='result-label'>Cash in your account on " + resultDate.getDate() + " " + resultDate.getMonthName() + ", " + resultDate.getFullYear() + ": <i class='icon-info-sign'></i></label><label class='result-value'>" + accountCash + "</label>");
 			
 		}
 
-		function calculate(ui){
-
+		function roundNumber(num) {
+			var result = Math.round(num*Math.pow(10,2))/Math.pow(10,2);
+			return result;
 		}
 	
 		</script>
