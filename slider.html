@@ -199,18 +199,13 @@
 
 			if(supplierCostCapital != 0){
 
-				console.log('yup');
 				preScfFinancingCost = roundNumber((invoiceValue/yearDays)*netDays*(supplierCostCapital/100)).toFixed(2);
-				postScfFinancingCost = roundNumber((invoiceValue/yearDays)*daysEarly*(scfPercent/100) + (invoiceValue/yearDays)*days*(supplierCostCapital/100)).toFixed(2);
 				costReduction = roundNumber(preScfFinancingCost - postScfFinancingCost).toFixed(2);
 				improvement = roundNumber((costReduction/preScfFinancingCost)*100).toFixed(2);
 
 				$('#pre-scf').html("<label class='result-label'>Pre SCF Financing Costs: <i class='icon-info-sign pre-scf'></i></label><label class='result-value'>" + preScfFinancingCost + "</label>");
-				$('#post-scf').html("<label class='result-label'>Post SCF Financing based on " + scfPercent + "% APR: <i class='icon-info-sign post-scf-scc'></i></label><label class='result-value'>" + postScfFinancingCost + "</label>");
 				$('#cost-reduction').html("<label class='result-label'>Supply Chain Price Reduction Potential: <i class='icon-info-sign cost-reduction'></i></label><label class='result-value'>" + costReduction + "</label>");
 				$('#percent-improv').html("<label class='result-label'>Percent Improvement: <i class='icon-info-sign percent-improv'></i></label><label class='result-value'>" + improvement + " %</label>");
-				console.log(preScfFinancingCost);
-				console.log(postScfFinancingCost);
 			}
 			else{
 				postScfFinancingCost = roundNumber((invoiceValue/yearDays)*daysEarly*(scfPercent/100)).toFixed(2);
@@ -241,9 +236,6 @@
 			}
 			else if($(event.target).hasClass('post-scf')){
 				calculationText(calculations.postScf);
-			}
-			else if($(event.target).hasClass('post-scf-scc')){
-				calculationText(calculations.postScfScc);
 			}
 			else if($(event.target).hasClass('cost-reduction')){
 				calculationText(calculations.costReduction);

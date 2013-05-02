@@ -9,10 +9,6 @@ calculations = {
 		"title" : "Post SCF Financing based on SCF Financing % APR:",
 		"formula" : "(Invoice Value/" + yearDays + ") * Days Paid Early * SCF Financing %"
 	},
-	"postScfScc" : {
-		"title" : "Post SCF Financing based on SCF Financing % APR:",
-		"formula" : "(Invoice Value/" + yearDays + ") * Days Paid Early * SCF Financing % + (Invoice Value/" + yearDays + ") * Day After Invoice to Pay * Supplier Value of Capital %"
-	},
 	"costReduction" : {
 		"title" : "Supply Chain Price Reduction Potential:",
 		"formula" : "Pre SCF Financing Costs - Post SCF Financing based on SCF Financing % APR"
