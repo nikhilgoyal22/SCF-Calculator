@@ -15,7 +15,7 @@
 		    <div id="calc-leftpanel">
 		        <div id="left-top">
 		        	<div id="lt-top">
-			        	<div id="left-header">Sample Rate and Payment Calculator</div>
+			        	<div id="left-header" class="calc-header">Sample Rate and Payment Calculator</div>
 			        	<div id="left-head-text"></div>
 			        	<div>
 			        		<select id="currency" class="selection span2">
@@ -25,7 +25,7 @@
 							    <option value="3">Another choice</option>
 							</select>
 							<label id="check-discount" class="checkbox">
-						    	<input id="checkbox-discount" type="checkbox"> <p style="font-size:1em;">I currently have discount terms</p>
+						    	<input id="checkbox-discount" type="checkbox"> <p class="input-label">I currently have discount terms</p>
 						    </label>
 			        	</div>
 			        </div>
@@ -36,7 +36,7 @@
 				        		<input id="inv-val" class="input-dimension" type="text" placeholder="Invoice Value">
 				        	</div>
 				        	<div class="span2 input-box">
-				        		<label class="input-label">SCF Financing(% APR)*</label>
+				        		<label class="input-label">SCF Financing (% APR)*</label>
 				        		<input id="scf-percent" class="input-dimension" type="text" placeholder="SCF Financing %">
 				        	</div>
 				        	<div class="span2 input-box">
@@ -60,12 +60,12 @@
 						</div>
 			        </div>
 			        <div id="lt-bottom">
-			        	<div id="lt-bottom-text">When do you want your recievable?</div>
+			        	<div id="lt-bottom-text" class="input-label">When do you want your recievable?</div>
 			        	<div id="slider-result">
-			        		<div id="result-day" style="float:left; font-weight:bold;"></div>
-			        		<div id="result-text" style="float:left; margin-left:2%; font-size:0.8em;"></div>
+			        		<div id="result-day" class="calc-header" style="float:left;"></div>
+			        		<div id="result-text" style="float:left; margin-left:2%; font-weight:lighter;"></div>
 			        	</div>
-			        	<div id="start-date" style="float:left; clear:both; font-size:1.1em; width:20%"></div>
+			        	<div id="start-date" style="float:left; clear:both; width:20%"></div>
 		            	<div style="width:52%; float:left;">
 		            		<div class="calc-slider"></div>
 		            	</div>
@@ -75,14 +75,14 @@
         		</div>
         		<div id="left-bottom">
         			<div id="button-div">
-        				<button class="btn span2">Save Scenario</button>
-        				<button class="btn span2">Get LIBOR</button>
+        				<button class="btn button-text">Save Scenario</button>
+        				<button class="btn button-text">Get LIBOR</button>
         			</div>
         		</div>
 		    </div>
 		    <div id="calc-rightpanel">
 		        <div id="right-top">
-		        	<div id="right-header">Scenario Results</div>
+		        	<div id="right-header" class="calc-header">Scenario Results</div>
 		        </div>
 		        <div id="right-middle">
 		        	<div id="pre-scf" class="result-field"></div>
@@ -197,6 +197,9 @@
 			discountDays = $('#disc-days').val();
 			daysEarly = netDays - days;
 
+			postScfFinancingCost = roundNumber((invoiceValue/yearDays)*daysEarly*(scfPercent/100)).toFixed(2);
+			$('#post-scf').html("<label class='result-label'>Post SCF Financing based on " + scfPercent + "% APR: <i class='icon-info-sign post-scf'></i></label><label class='result-value'>" + postScfFinancingCost + "</label>");
+
 			if(supplierCostCapital != 0){
 
 				preScfFinancingCost = roundNumber((invoiceValue/yearDays)*netDays*(supplierCostCapital/100)).toFixed(2);
@@ -206,11 +209,15 @@
 				$('#pre-scf').html("<label class='result-label'>Pre SCF Financing Costs: <i class='icon-info-sign pre-scf'></i></label><label class='result-value'>" + preScfFinancingCost + "</label>");
 				$('#cost-reduction').html("<label class='result-label'>Supply Chain Price Reduction Potential: <i class='icon-info-sign cost-reduction'></i></label><label class='result-value'>" + costReduction + "</label>");
 				$('#percent-improv').html("<label class='result-label'>Percent Improvement: <i class='icon-info-sign percent-improv'></i></label><label class='result-value'>" + improvement + " %</label>");
+
+				$('#pre-scf').show();
+				$('#cost-reduction').show();
+				$('#percent-improv').show();
 			}
 			else{
-				postScfFinancingCost = roundNumber((invoiceValue/yearDays)*daysEarly*(scfPercent/100)).toFixed(2);
-				$('#post-scf').html("<label class='result-label'>Post SCF Financing based on " + scfPercent + "% APR: <i class='icon-info-sign post-scf'></i></label><label class='result-value'>" + postScfFinancingCost + "</label>");
-				console.log(postScfFinancingCost);
+				$('#pre-scf').hide();
+				$('#cost-reduction').hide();
+				$('#percent-improv').hide();
 			}
 
 			resultDate = new Date;

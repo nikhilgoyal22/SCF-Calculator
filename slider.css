@@ -1,12 +1,16 @@
+@font-face { font-family: SS; src: url('ss-standard.otf'); } 
+@font-face { font-family: SSB; src: url('ss-pika.otf'); } 
+
 #calc-container{
     position: absolute;
-    width:55%;
-    height:67%;
+    width:900px;
+    height:600px;
     background:transparent;
-    font-family: "Arial","Helvetica",sans-serif;
+    font-family: "Helvetica",sans-serif;
+    min-height: 588px;
 }
 #calc-leftpanel{
-    width:66%;
+    width:68%;
     height:97%;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -44,7 +48,7 @@
     
 }
 #calc-rightpanel{
-    width:30%;
+    width:28%;
     height:97%;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -99,8 +103,6 @@
 }
 #left-header{
     margin-bottom: 2%;
-    font-size: 1.3em;
-    font-weight: bold;
 }
 #left-head-text{
     font-weight: lighter;
@@ -127,13 +129,10 @@
 }
 #lt-bottom-text{
     margin-bottom: 2%;
-    font-weight: bold; 
 }
 #right-header{
-    padding:8%; 
+    padding:5% 8%; 
     width:25%; 
-    font-size:1.2em; 
-    font-weight: bold;
     line-height: 1.5em;
     color: #FFFFFF;
 }
@@ -184,10 +183,8 @@
     font-size: 1.5em !important;
 }
 #slider-result {
-    font-size:1.6em;
-    font-family:Arial, Helvetica, sans-serif;
+
     color:#FFFFFF;
-    text-shadow:0 1px 1px #000;
     margin-bottom:8%; 
 }
 
@@ -196,7 +193,7 @@
 	height:6px;
 	background:#615D5A;
 	position:relative;
-	margin: 2% auto;
+	margin: 2.7% auto;
 	padding:0 10px;
 	border: 0;
 }
@@ -204,7 +201,7 @@
 	width:24px;
 	height:24px !important;
 	position:absolute;
-	top:-7px;
+	top:-7px !important;
 	margin-left:-12px;
 	z-index:200;
 	background:url(slider-button1.png) !important;
@@ -227,12 +224,22 @@ a {
 }
 
 label{
-    font-size: 1em !important;
+    
 }
 input{
     font-size: 0.9em !important;
 }
 
+.calc-header{
+    font-size: 1.4em !important;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0,0,0,.45);
+}
+.button-text{
+    font-size: 0.9em !important;
+    font-weight: 500;
+}
 .input-row{
     margin-bottom: 2%;
 }
@@ -243,6 +250,10 @@ input{
 }
 .input-label{
     width:100% !important;    
+    font-size: 0.9em !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,.45);
+    font-weight: 500;
+
 }
 .input-dimension{
     width: 100% !important;
